@@ -11,6 +11,6 @@ This project is a starting point for a Flutter application.
 
 With flutter installed, run hte below at the root of the project
 
-```bash
+```bashe$$
 flutter run
 ```

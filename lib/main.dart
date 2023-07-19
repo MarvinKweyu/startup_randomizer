@@ -62,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
         page = GeneratorPage();
         break;
       case 1:
-        page = Placeholder();
+        page = FavoritesPage();
         break;
       default:
         throw UnimplementedError('No widget for invalid index: $selectedIndex');
@@ -122,7 +122,7 @@ class GeneratorPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          BigCard(pair: pair),
+          BigCard(pair: pair, width: 20),
           SizedBox(height: 10),
           Row(
             mainAxisSize: MainAxisSize.min,
@@ -149,15 +149,46 @@ class GeneratorPage extends StatelessWidget {
   }
 }
 
-// ...
+class FavoritesPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+    var favorites = appState.favorites;
+
+    if (favorites.isEmpty) {
+      return Center(
+        child: Text(
+          'No favorites yet',
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+      );
+    }
+    return ListView(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            'Favorites',
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+        ),
+        for (var pair in favorites)
+          ListTile(
+              leading: Icon(Icons.favorite), title: Text(pair.asLowerCase)),
+      ],
+    );
+  }
+}
 
 class BigCard extends StatelessWidget {
   const BigCard({
     super.key,
     required this.pair,
+    required width,
   });
 
   final WordPair pair;
+  final int width = 20;
 
   @override
   Widget build(BuildContext context) {
